@@ -5,27 +5,28 @@ import userRouter from "./src/routes/userRoutes.js";
 import characterRouter from "./src/routes/characterRoutes.js";
 import battleRouter from "./src/routes/battleRoutes.js";
 import connectDB from "./src/config/db.js";
+import "dotenv/config";
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Welcome, User");
+app.get("/api", (req, res) => {
+  res.send("API is running");
 });
 
-app.use("/", router);
+app.use("/api/auth", router);
+app.use("/api/users", userRouter);
+app.use("/api/characters", characterRouter);
+app.use("/api/battles", battleRouter);
 
-app.use("/", userRouter);
-
-app.use("/", characterRouter);
-
-app.use("/", battleRouter);
-
-import "dotenv/config";
-app.listen(process.env.PORT, async () => {
-  await connectDB();
-});
+await connectDB();
 
 export default app;

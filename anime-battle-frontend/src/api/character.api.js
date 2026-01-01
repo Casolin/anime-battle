@@ -2,7 +2,9 @@ import api from "./axios";
 
 export const UserCharacters = async (user) => {
   try {
-    const response = await api.get("/characters/user", { params: { user } });
+    const response = await api.get("/api/characters/user", {
+      params: { user },
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching user characters:", error);
@@ -12,7 +14,7 @@ export const UserCharacters = async (user) => {
 
 export const Characters = async () => {
   try {
-    const response = await api.get("/characters");
+    const response = await api.get("/api/characters");
     return response.data;
   } catch (error) {
     console.error("Error fetching characters:", error);
@@ -22,7 +24,7 @@ export const Characters = async () => {
 
 export const AddCharacter = async (character) => {
   try {
-    const response = await api.post("/characters/add", character);
+    const response = await api.post("/api/characters/add", character);
     return response.data;
   } catch (error) {
     console.error("Error adding character:", error);
@@ -32,7 +34,9 @@ export const AddCharacter = async (character) => {
 
 export const DeleteCharacter = async (character) => {
   try {
-    const response = await api.delete(`/characters/delete/${character._id}`);
+    const response = await api.delete(
+      `/api/characters/delete/${character._id}`
+    );
     return response.data;
   } catch (error) {
     console.error("Error deleting character:", error);

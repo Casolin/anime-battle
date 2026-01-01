@@ -1,0 +1,51 @@
+import { useState, useEffect } from "react";
+import { CharacterCard } from "./CharacterCard";
+import useCharacters from "../../hooks/useCharacters";
+import useAuth from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import Loader from "../Loader";
+
+export const UserCharacterList = () => {
+  const [loader, setLoader] = useState(true);
+  const navigate = useNavigate();
+  const { characterList, getUserCharacter } = useCharacters();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      getUserCharacter(user.id);
+    }
+  }, [user, characterList, getUserCharacter]);
+
+  setTimeout(() => setLoader(false), 1000);
+
+  if (loader) return <Loader />;
+
+  return (
+    <div className="container my-5">
+      <button
+        className="btn btn-outline-primary position-absolute top-0 start-0 m-3"
+        style={{
+          zIndex: 2,
+        }}
+        onClick={() => navigate("/dashboard")}
+      >
+        <i className="bi bi-arrow-left"></i> Back
+      </button>
+      <h2 className="text-center mb-4">Your Characters</h2>
+      {characterList.length !== 0 ? (
+        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+          {characterList.map((character) => (
+            <div key={character.id} className="col">
+              <CharacterCard character={character} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="col-12 text-center">
+          <p className="text-muted">No characters found. Add one!</p>
+        </div>
+      )}
+    </div>
+  );
+};

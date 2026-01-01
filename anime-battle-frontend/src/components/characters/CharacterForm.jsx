@@ -1,0 +1,169 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import useCharacters from "../../hooks/useCharacters";
+import { toast } from "react-toastify";
+import Loader from "../Loader";
+
+export const CharacterForm = () => {
+  const [loader, setLoader] = useState(true);
+  const navigate = useNavigate();
+  const { addNewCharacter } = useCharacters();
+  const [character, setCharacter] = useState({
+    image: "",
+    name: "",
+    strength: "",
+    speed: "",
+    skill: "",
+  });
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoader(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loader) return <Loader />;
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCharacter((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await addNewCharacter({
+        image: character.image,
+        name: character.name,
+        stats: {
+          strength: character.strength,
+          speed: character.speed,
+          skill: character.skill,
+        },
+      });
+
+      toast.success("Character added successful!");
+
+      setCharacter({
+        image: "",
+        name: "",
+        strength: "",
+        speed: "",
+        skill: "",
+      });
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Something went wrong");
+    }
+  };
+
+  return (
+    <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
+      <button
+        className="btn btn-outline-primary position-absolute top-0 start-0 m-3"
+        style={{
+          zIndex: 2,
+        }}
+        onClick={() => navigate("/dashboard")}
+      >
+        <i className="bi bi-arrow-left"></i> Back
+      </button>
+      <div className="card shadow-lg p-4" style={{ width: "380px" }}>
+        <h3 className="text-center mb-4">
+          <i className="bi bi-person-circle me-2 text-primary"></i>
+          Add Character
+        </h3>
+
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label className="form-label">Name</label>
+            <div className="input-group">
+              <span className="input-group-text">
+                <i className="bi bi-envelope"></i>
+              </span>
+              <input
+                type="text"
+                name="name"
+                className="form-control"
+                placeholder="Enter character name"
+                value={character.name}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Image</label>
+            <div className="input-group">
+              <span className="input-group-text">
+                <i className="bi bi-envelope"></i>
+              </span>
+              <input
+                type="url"
+                name="image"
+                className="form-control"
+                placeholder="Enter character image"
+                value={character.image}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <label className="form-label">Strength</label>
+            <div className="input-group">
+              <span className="input-group-text">
+                <i className="bi bi-lock"></i>
+              </span>
+              <input
+                type="number"
+                name="strength"
+                className="form-control"
+                placeholder="Enter character strength"
+                value={character.strength}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <label className="form-label">Speed</label>
+            <div className="input-group">
+              <span className="input-group-text">
+                <i className="bi bi-lock"></i>
+              </span>
+              <input
+                type="number"
+                name="speed"
+                className="form-control"
+                placeholder="Enter character speed"
+                value={character.speed}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <label className="form-label">Skill</label>
+            <div className="input-group">
+              <span className="input-group-text">
+                <i className="bi bi-lock"></i>
+              </span>
+              <input
+                type="number"
+                name="skill"
+                className="form-control"
+                placeholder="Enter character skill"
+                value={character.skill}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          <button type="submit" className="btn btn-primary w-100">
+            Add
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};

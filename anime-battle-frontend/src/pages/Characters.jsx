@@ -5,7 +5,7 @@ export const Characters = () => {
   return (
     <div className="container my-5">
       <div className="row g-4 justify-content-center align-items-stretch">
-        <div className="col-md-3 d-flex">
+        <div className="col-md-3 col-12 d-flex">
           <div className="card text-white w-100 h-100 character-card border-0">
             <img
               src="https://w0.peakpx.com/wallpaper/961/507/HD-wallpaper-sung-jin-woo-solo-leveling.jpg"
@@ -24,7 +24,7 @@ export const Characters = () => {
           </div>
         </div>
 
-        <div className="col-md-3 d-flex">
+        <div className="col-md-3 col-12 d-flex">
           <div className="card text-white w-100 h-100 character-card border-0">
             <img
               src="https://w0.peakpx.com/wallpaper/78/864/HD-wallpaper-golden-goku-goku-ssj3-artwork-dragon-ball-super-manga-dbs-son-goku.jpg"
@@ -43,7 +43,7 @@ export const Characters = () => {
           </div>
         </div>
 
-        <div className="col-md-3 d-flex">
+        <div className="col-md-3 col-12 d-flex">
           <div className="card text-white w-100 h-100 character-card border-0">
             <img
               src="https://w0.peakpx.com/wallpaper/498/958/HD-wallpaper-goku-dragon-ball-z-goku-nigth-goku-space-night-night-goku-space-goku.jpg"

@@ -29,4 +29,8 @@ app.use("/api/battles", battleRouter);
 
 await connectDB();
 
+app.listen(process.env.PORT, () => {
+  console.log("Started");
+});
+
 export default app;

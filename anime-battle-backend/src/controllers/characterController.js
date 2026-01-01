@@ -4,10 +4,11 @@ export const createCharacter = async (req, res) => {
   try {
     const character = new Character({
       ...req.body,
-      owner: req.user._id,
+      owner: req.user.id,
     });
 
     await character.save();
+
     res.status(201).json(character);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -25,7 +26,7 @@ export const getAllCharacters = async (req, res) => {
 
 export const getMyCharacters = async (req, res) => {
   try {
-    const characters = await Character.find({ owner: req.user._id }).populate(
+    const characters = await Character.find({ owner: req.user.id }).populate(
       "owner",
       "username"
     );
@@ -39,7 +40,7 @@ export const deleteCharacter = async (req, res) => {
   try {
     const character = await Character.findOneAndDelete({
       _id: req.params.id,
-      owner: req.user._id,
+      owner: req.user.id,
     });
 
     if (!character)

@@ -2,11 +2,11 @@
   "name": "anime-battle-backend",
   "version": "1.0.0",
   "type": "module",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./src/server.js",
-    "dev": "nodemon ./src/server.js"
+    "start": "node ./index.js",
+    "dev": "nodemon ./index.js"
   },
   "keywords": [],
   "author": "",

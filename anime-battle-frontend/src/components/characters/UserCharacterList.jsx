@@ -12,12 +12,19 @@ export const UserCharacterList = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (user) {
-      getUserCharacter(user.id);
-    }
-  }, [user, characterList, getUserCharacter]);
+    const fetchCharacters = async () => {
+      if (!user) return;
+      try {
+        await getUserCharacter(); // no user param
+      } catch (error) {
+        console.error("Failed to fetch user characters:", error);
+      } finally {
+        setLoader(false);
+      }
+    };
 
-  setTimeout(() => setLoader(false), 1000);
+    fetchCharacters();
+  }, [user, getUserCharacter]);
 
   if (loader) return <Loader />;
 
@@ -25,9 +32,7 @@ export const UserCharacterList = () => {
     <div className="container my-5">
       <button
         className="btn btn-outline-primary position-absolute top-0 start-0 m-3"
-        style={{
-          zIndex: 2,
-        }}
+        style={{ zIndex: 2 }}
         onClick={() => navigate("/dashboard")}
       >
         <i className="bi bi-arrow-left"></i> Back
@@ -36,7 +41,7 @@ export const UserCharacterList = () => {
       {characterList.length !== 0 ? (
         <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
           {characterList.map((character) => (
-            <div key={character.id} className="col">
+            <div key={character._id} className="col">
               <CharacterCard character={character} />
             </div>
           ))}

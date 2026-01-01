@@ -1,10 +1,8 @@
 import api from "./axios";
 
-export const UserCharacters = async (user) => {
+export const UserCharacters = async () => {
   try {
-    const response = await api.get("/api/characters/user", {
-      params: { user },
-    });
+    const response = await api.get("/api/characters/user");
     return response.data;
   } catch (error) {
     console.error("Error fetching user characters:", error);

@@ -1,7 +1,17 @@
 import useAuth from "../../hooks/useAuth";
+import toast from "react-toastify";
 
 const Sidebar = ({ activePage, setActivePage }) => {
   const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Logged out succesfully!");
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
 
   return (
     <nav className="col-md-3 col-lg-2 d-flex flex-column bg-dark text-white p-4">
@@ -66,7 +76,7 @@ const Sidebar = ({ activePage, setActivePage }) => {
       <div className="mt-auto">
         <button
           className="btn btn-outline-danger w-100 py-2"
-          onClick={logout}
+          onClick={handleLogout}
           style={{
             borderRadius: "30px",
             fontWeight: "bold",

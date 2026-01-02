@@ -12,7 +12,7 @@ export const UserCharacterList = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (!user) return; // Early return if no user
+    if (!user) return;
 
     const fetchCharacters = async () => {
       try {
@@ -25,7 +25,7 @@ export const UserCharacterList = () => {
     };
 
     fetchCharacters();
-  }, [user, getUserCharacter]);
+  }, []);
 
   if (loader) return <Loader />;
 

@@ -5,9 +5,7 @@ const Sidebar = ({ activePage, setActivePage }) => {
 
   return (
     <nav className="col-md-3 col-lg-2 d-flex flex-column bg-dark text-white p-4">
-      <h4 className="text-center mb-4 font-weight-bold text-uppercase">
-        Anime Battle
-      </h4>
+      <img src="../../../public/logo.jpg" alt="Anime Battle Logo" />
 
       <ul className="nav flex-column gap-3">
         <li className="w-100">
@@ -51,7 +49,7 @@ const Sidebar = ({ activePage, setActivePage }) => {
             onClick={() => setActivePage("battle")}
             style={{
               transition: "background-color 0.3s ease, transform 0.2s ease",
-              width: "100%", // Ensure it takes full width of the parent
+              width: "100%",
             }}
             onMouseEnter={(e) => (e.target.style.transform = "scale(1.05)")}
             onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}

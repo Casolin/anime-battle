@@ -12,8 +12,9 @@ export const UserCharacterList = () => {
   const { user } = useAuth();
 
   useEffect(() => {
+    if (!user) return;
+
     const fetchCharacters = async () => {
-      if (!user) return;
       try {
         await getUserCharacter();
       } catch (error) {
@@ -24,7 +25,8 @@ export const UserCharacterList = () => {
     };
 
     fetchCharacters();
-  }, [user, getUserCharacter]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   if (loader) return <Loader />;
 

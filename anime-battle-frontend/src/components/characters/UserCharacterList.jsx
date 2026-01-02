@@ -12,20 +12,21 @@ export const UserCharacterList = () => {
   const { user } = useAuth();
 
   useEffect(() => {
+    // Check if user exists and only run the fetch once if the user is available
     if (!user) return;
 
     const fetchCharacters = async () => {
       try {
-        await getUserCharacter(); // no user param
+        await getUserCharacter();
       } catch (error) {
         console.error("Failed to fetch user characters:", error);
       } finally {
-        setLoader(false);
+        setLoader(false); // stop loading
       }
     };
 
     fetchCharacters();
-  }, []);
+  }, [user]); // The effect will only rerun if `user` changes
 
   if (loader) return <Loader />;
 

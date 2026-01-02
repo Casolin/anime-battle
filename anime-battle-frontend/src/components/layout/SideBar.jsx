@@ -63,7 +63,6 @@ const Sidebar = ({ activePage, setActivePage }) => {
         </li>
       </ul>
 
-      {/* Logout Button */}
       <div className="mt-auto">
         <button
           className="btn btn-outline-danger w-100 py-2"

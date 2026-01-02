@@ -9,13 +9,13 @@ export const CharacterForm = () => {
   const navigate = useNavigate();
   const { addNewCharacter } = useCharacters();
   const [character, setCharacter] = useState({
-    image: "", // Will store either the URL or base64 string of the image
+    image: "",
     name: "",
     strength: "",
     speed: "",
     skill: "",
   });
-  const [imageSource, setImageSource] = useState("url"); // Tracks whether the user selected URL or file
+  const [imageSource, setImageSource] = useState("url");
 
   useEffect(() => {
     const timer = setTimeout(() => setLoader(false), 1000);
@@ -28,17 +28,16 @@ export const CharacterForm = () => {
     const { name, value, type, files } = e.target;
 
     if (type === "file") {
-      // Handle file input: Convert the file to base64 string
       const file = files[0];
       if (file) {
         const reader = new FileReader();
         reader.onloadend = () => {
           setCharacter((prev) => ({
             ...prev,
-            [name]: reader.result, // Set base64 string as image value
+            [name]: reader.result,
           }));
         };
-        reader.readAsDataURL(file); // Convert file to base64
+        reader.readAsDataURL(file);
       }
     } else {
       setCharacter((prev) => ({ ...prev, [name]: value }));
@@ -48,16 +47,14 @@ export const CharacterForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      // Check if character has either image URL or base64 string
-      if (!character.image) {
-        toast.error("Image is required");
-        return;
-      }
+    if (!character.image) {
+      toast.error("Image is required");
+      return;
+    }
 
-      // Add the character to the backend
+    try {
       await addNewCharacter({
-        image: character.image, // This will be a URL or base64 string
+        image: character.image,
         name: character.name,
         stats: {
           strength: character.strength,
@@ -84,9 +81,7 @@ export const CharacterForm = () => {
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
       <button
         className="btn btn-outline-primary position-absolute top-0 start-0 m-3"
-        style={{
-          zIndex: 2,
-        }}
+        style={{ zIndex: 2 }}
         onClick={() => navigate("/dashboard")}
       >
         <i className="bi bi-arrow-left"></i> Back
@@ -98,7 +93,6 @@ export const CharacterForm = () => {
         </h3>
 
         <form onSubmit={handleSubmit}>
-          {/* Name Input */}
           <div className="mb-3">
             <label className="form-label">Name</label>
             <div className="input-group">
@@ -116,7 +110,6 @@ export const CharacterForm = () => {
             </div>
           </div>
 
-          {/* Image Source Selection */}
           <div className="mb-3">
             <label className="form-label">Image Source</label>
             <div className="d-flex justify-content-start mb-3">
@@ -145,7 +138,6 @@ export const CharacterForm = () => {
             </div>
           </div>
 
-          {/* Conditionally render input based on imageSource */}
           {imageSource === "url" ? (
             <div className="mb-3">
               <label className="form-label">Image URL</label>
@@ -180,7 +172,6 @@ export const CharacterForm = () => {
             </div>
           )}
 
-          {/* Strength Input */}
           <div className="mb-4">
             <label className="form-label">Strength</label>
             <div className="input-group">
@@ -198,7 +189,6 @@ export const CharacterForm = () => {
             </div>
           </div>
 
-          {/* Speed Input */}
           <div className="mb-4">
             <label className="form-label">Speed</label>
             <div className="input-group">
@@ -216,7 +206,6 @@ export const CharacterForm = () => {
             </div>
           </div>
 
-          {/* Skill Input */}
           <div className="mb-4">
             <label className="form-label">Skill</label>
             <div className="input-group">

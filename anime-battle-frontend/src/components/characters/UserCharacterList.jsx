@@ -6,7 +6,27 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../Loader";
 
 export const UserCharacterList = () => {
+  const [loader, setLoader] = useState(true);
   const navigate = useNavigate();
+  const { characterList, getUserCharacter } = useCharacters();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const fetchCharacters = async () => {
+      if (!user) return;
+      try {
+        await getUserCharacter(); // no user param
+      } catch (error) {
+        console.error("Failed to fetch user characters:", error);
+      } finally {
+        setLoader(false);
+      }
+    };
+
+    fetchCharacters();
+  }, [user, getUserCharacter]);
+
+  if (loader) return <Loader />;
 
   return (
     <div className="container my-5">

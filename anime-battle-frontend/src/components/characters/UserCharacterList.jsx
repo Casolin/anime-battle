@@ -3,34 +3,10 @@ import { CharacterCard } from "./CharacterCard";
 import useCharacters from "../../hooks/useCharacters";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import Loader from "../Loader"; // Bootstrap spinner
+import Loader from "../Loader";
 
 export const UserCharacterList = () => {
-  const [loading, setLoading] = useState(true); // Track loading state
   const navigate = useNavigate();
-  const { characterList, getUserCharacter } = useCharacters();
-  const { user } = useAuth();
-
-  useEffect(() => {
-    // Fetch characters only when `user` is available
-    const fetchCharacters = async () => {
-      if (!user) return; // Don't fetch if no user is available
-      try {
-        await getUserCharacter(); // Fetch user characters
-      } catch (error) {
-        console.error("Failed to fetch user characters:", error);
-      } finally {
-        setLoading(false); // Stop the loader after fetch is complete
-      }
-    };
-
-    if (user) {
-      // Only run fetch when `user` exists
-      fetchCharacters();
-    }
-  }, [user, getUserCharacter]); // Re-run when `user` or `getUserCharacter` changes
-
-  if (loading) return <Loader />; // Show loader spinner while loading
 
   return (
     <div className="container my-5">

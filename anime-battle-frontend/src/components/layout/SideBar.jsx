@@ -5,7 +5,7 @@ const Sidebar = ({ activePage, setActivePage }) => {
 
   return (
     <nav className="col-md-3 col-lg-2 d-flex flex-column bg-dark text-white p-4">
-      <img src="../../../public/logo.jpg" alt="Anime Battle Logo" />
+      <img src="../../../public/icon.png" alt="Anime Battle Logo" />
 
       <ul className="nav flex-column gap-3">
         <li className="w-100">

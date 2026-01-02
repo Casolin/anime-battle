@@ -12,8 +12,9 @@ export const UserCharacterList = () => {
   const { user } = useAuth();
 
   useEffect(() => {
+    if (!user) return; // Early return if no user
+
     const fetchCharacters = async () => {
-      if (!user) return;
       try {
         await getUserCharacter(); // no user param
       } catch (error) {

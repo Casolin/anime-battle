@@ -9,13 +9,13 @@ export const CharacterForm = () => {
   const navigate = useNavigate();
   const { addNewCharacter } = useCharacters();
   const [character, setCharacter] = useState({
-    image: "", // Store either URL or file
+    image: "",
     name: "",
     strength: "",
     speed: "",
     skill: "",
   });
-  const [imageSource, setImageSource] = useState("url"); // State to track whether URL or file input is selected
+  const [imageSource, setImageSource] = useState("url");
 
   useEffect(() => {
     const timer = setTimeout(() => setLoader(false), 1000);
@@ -28,13 +28,18 @@ export const CharacterForm = () => {
     const { name, value, type, files } = e.target;
 
     if (type === "file") {
-      // Handle file selection
-      setCharacter((prev) => ({
-        ...prev,
-        [name]: files[0], // Store the file object
-      }));
+      const file = files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setCharacter((prev) => ({
+            ...prev,
+            [name]: reader.result, // Set base64 string as image value
+          }));
+        };
+        reader.readAsDataURL(file); // Convert file to base64
+      }
     } else {
-      // Handle text-based inputs
       setCharacter((prev) => ({ ...prev, [name]: value }));
     }
   };
@@ -43,20 +48,16 @@ export const CharacterForm = () => {
     e.preventDefault();
 
     try {
-      const formData = new FormData();
+      await addNewCharacter({
+        image: character.image, // This will be a URL or base64 string
+        name: character.name,
+        stats: {
+          strength: character.strength,
+          speed: character.speed,
+          skill: character.skill,
+        },
+      });
 
-      if (imageSource === "file") {
-        formData.append("image", character.image); // Append the file
-      } else {
-        formData.append("image", character.image); // Append the URL (if URL is selected)
-      }
-
-      formData.append("name", character.name);
-      formData.append("strength", character.strength);
-      formData.append("speed", character.speed);
-      formData.append("skill", character.skill);
-
-      await addNewCharacter(formData);
       toast.success("Character added successfully!");
 
       setCharacter({
@@ -75,7 +76,9 @@ export const CharacterForm = () => {
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
       <button
         className="btn btn-outline-primary position-absolute top-0 start-0 m-3"
-        style={{ zIndex: 2 }}
+        style={{
+          zIndex: 2,
+        }}
         onClick={() => navigate("/dashboard")}
       >
         <i className="bi bi-arrow-left"></i> Back
@@ -87,7 +90,6 @@ export const CharacterForm = () => {
         </h3>
 
         <form onSubmit={handleSubmit}>
-          {/* Name Input */}
           <div className="mb-3">
             <label className="form-label">Name</label>
             <div className="input-group">
@@ -105,7 +107,6 @@ export const CharacterForm = () => {
             </div>
           </div>
 
-          {/* Image Source Selection */}
           <div className="mb-3">
             <label className="form-label">Image Source</label>
             <div className="d-flex justify-content-start mb-3">
@@ -134,7 +135,6 @@ export const CharacterForm = () => {
             </div>
           </div>
 
-          {/* Conditionally render input based on imageSource */}
           {imageSource === "url" ? (
             <div className="mb-3">
               <label className="form-label">Image URL</label>
@@ -169,7 +169,6 @@ export const CharacterForm = () => {
             </div>
           )}
 
-          {/* Strength Input */}
           <div className="mb-4">
             <label className="form-label">Strength</label>
             <div className="input-group">
@@ -187,7 +186,6 @@ export const CharacterForm = () => {
             </div>
           </div>
 
-          {/* Speed Input */}
           <div className="mb-4">
             <label className="form-label">Speed</label>
             <div className="input-group">
@@ -205,7 +203,6 @@ export const CharacterForm = () => {
             </div>
           </div>
 
-          {/* Skill Input */}
           <div className="mb-4">
             <label className="form-label">Skill</label>
             <div className="input-group">

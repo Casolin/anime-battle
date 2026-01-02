@@ -1,5 +1,5 @@
 import useAuth from "../../hooks/useAuth";
-import toast from "react-toastify";
+import { toast } from "react-toastify";
 
 const Sidebar = ({ activePage, setActivePage }) => {
   const { logout } = useAuth();

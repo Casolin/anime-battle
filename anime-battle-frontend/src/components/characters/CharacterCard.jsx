@@ -1,8 +1,10 @@
+import { useEffect } from "react";
 import useCharacters from "../../hooks/useCharacters";
 import { toast } from "react-toastify";
 
 export const CharacterCard = ({ character }) => {
-  const { deleteCharacter } = useCharacters();
+  const { deleteCharacter, selectCharacter, selectedCharacter } =
+    useCharacters();
 
   const handleDeleteCharacter = async () => {
     try {
@@ -10,6 +12,21 @@ export const CharacterCard = ({ character }) => {
       toast.success("Character deleted successfully!");
     } catch (error) {
       toast.error(error.message || "Unable to delete character!");
+    }
+  };
+
+  useEffect(() => {
+    if (selectedCharacter) {
+      console.log("Selected character updated:", selectedCharacter);
+    }
+  }, [selectedCharacter]);
+
+  const handleSelection = async () => {
+    try {
+      selectCharacter(character);
+      toast.success("Character selected succesfully!");
+    } catch (err) {
+      toast.error(err.message || "Error selecting character");
     }
   };
 
@@ -44,12 +61,6 @@ export const CharacterCard = ({ character }) => {
           <hr className="m-1" />
         </div>
 
-        {character.owner && (
-          <p className="text-muted mt-auto text-center">
-            <strong>Owner:</strong> {character.owner.username}
-          </p>
-        )}
-
         <div className="text-center mt-2">
           <button
             className="btn btn-danger btn-sm"
@@ -70,6 +81,7 @@ export const CharacterCard = ({ character }) => {
               transition: "background-color 0.3s ease",
               marginLeft: "10px",
             }}
+            onClick={() => handleSelection()}
           >
             <i className="bi bi-check-circle"></i> Select
           </button>

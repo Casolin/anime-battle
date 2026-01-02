@@ -12,7 +12,7 @@ export const UserCharacters = async () => {
 
 export const Characters = async () => {
   try {
-    const response = await api.get("/api/characters");
+    const response = await api.get("/api/characters/enemies");
     return response.data;
   } catch (error) {
     console.error("Error fetching characters:", error);

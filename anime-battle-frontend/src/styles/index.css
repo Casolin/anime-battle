@@ -6,35 +6,3 @@
   transform: scale(1.05);
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.4);
 }
-
-/* Hide the default file input */
-input[type="file"].d-none {
-  display: none;
-}
-
-/* Style the custom file upload label */
-.custom-file-upload {
-  cursor: pointer;
-  border: 1px solid #ccc;
-  background-color: #f8f9fa;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 14px;
-  transition: background-color 0.3s, border-color 0.3s;
-}
-
-.custom-file-upload:hover {
-  background-color: #e9ecef;
-  border-color: #007bff;
-}
-
-.custom-file-upload span {
-  flex-grow: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.custom-file-upload i {
-  font-size: 18px;
-}

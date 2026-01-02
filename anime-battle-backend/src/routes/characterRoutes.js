@@ -3,14 +3,14 @@ import {
   createCharacter,
   deleteCharacter,
   getMyCharacters,
-  getAllCharacters,
+  getEnemyCharacters,
 } from "../controllers/characterController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
 router.get("/user", authenticate, getMyCharacters);
-router.get("/", authenticate, getAllCharacters);
+router.get("/enemies", authenticate, getEnemyCharacters);
 router.post("/add", authenticate, createCharacter);
 router.delete("/delete/:id", authenticate, deleteCharacter);
 

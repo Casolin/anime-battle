@@ -10,6 +10,7 @@ const CharacterContext = createContext(null);
 
 export const CharacterContextProvider = ({ children }) => {
   const [selectedCharacter, setSelectedCharacter] = useState(null);
+  const [selectedEnemyCharacter, setSelectedEnemyCharacter] = useState(null);
   const [characterList, setCharacterList] = useState([]);
 
   const addNewCharacter = async (newCharacter) => {
@@ -22,12 +23,13 @@ export const CharacterContextProvider = ({ children }) => {
     }
   };
 
-  const getCharacterList = async () => {
+  const getEnemyCharacters = async () => {
     try {
-      const characters = await Characters();
-      setCharacterList(characters);
+      const response = await Characters("/enemies");
+      setCharacterList(response);
     } catch (error) {
-      console.error("Error fetching characters:", error.message);
+      console.error("Error fetching enemy characters:", error.message);
+      setCharacterList([]);
     }
   };
 
@@ -53,17 +55,24 @@ export const CharacterContextProvider = ({ children }) => {
     setSelectedCharacter(character);
   };
 
+  const selectEnemyCharacter = (character) => {
+    setSelectedEnemyCharacter(character);
+  };
+
   return (
     <CharacterContext.Provider
       value={{
         selectedCharacter,
+        selectedEnemyCharacter,
         characterList,
         setSelectedCharacter,
+        setSelectedEnemyCharacter,
         setCharacterList,
         addNewCharacter,
-        getCharacterList,
+        getEnemyCharacters,
         getUserCharacter,
         selectCharacter,
+        selectEnemyCharacter,
         deleteCharacter,
       }}
     >

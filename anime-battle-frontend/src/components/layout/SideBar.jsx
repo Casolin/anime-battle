@@ -44,23 +44,6 @@ const Sidebar = ({ activePage, setActivePage }) => {
             Characters
           </button>
         </li>
-
-        <li className="w-100">
-          <button
-            className={`nav-link text-white p-3 rounded-3 w-100 ${
-              activePage === "battle" ? "active bg-primary" : "bg-dark"
-            }`}
-            onClick={() => setActivePage("battle")}
-            style={{
-              transition: "background-color 0.3s ease, transform 0.2s ease",
-              width: "100%",
-            }}
-            onMouseEnter={(e) => (e.target.style.transform = "scale(1.05)")}
-            onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
-          >
-            Battle
-          </button>
-        </li>
       </ul>
 
       <div className="mt-auto">

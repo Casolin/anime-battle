@@ -11,6 +11,8 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Characters } from "./pages/Characters";
 import { CharacterForm } from "./components/characters/CharacterForm";
 import { UserCharacterList } from "./components/characters/UserCharacterList";
+import { EnemyCharacterList } from "./components/characters/EnemyCharacterList";
+import { Battle } from "./pages/Battle";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="/characters" element={<Characters />} />
           <Route path="/add-character" element={<CharacterForm />} />
           <Route path="/user-characters" element={<UserCharacterList />} />
+          <Route path="/enemy-characters" element={<EnemyCharacterList />} />
+          <Route path="/battle" element={<Battle />} />
         </Route>
       </Routes>
       <ToastContainer position="top-right" autoClose={3000} />

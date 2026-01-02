@@ -35,7 +35,7 @@ export const Characters = () => {
               <h4 className="fw-bold mb-3">Character List</h4>
               <button
                 className="btn btn-outline-light fw-semibold px-4"
-                onClick={() => navigate("characters-list")}
+                onClick={() => navigate("/enemy-characters")}
               >
                 View
               </button>

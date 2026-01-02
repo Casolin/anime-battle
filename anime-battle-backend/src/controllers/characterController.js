@@ -15,10 +15,12 @@ export const createCharacter = async (req, res) => {
   }
 };
 
-export const getAllCharacters = async (req, res) => {
+export const getEnemyCharacters = async (req, res) => {
   try {
-    const characters = await Character.find();
-    res.json(characters);
+    const enemies = await Character.find({
+      owner: { $ne: req.user.id },
+    }).populate("owner", "username");
+    res.json(enemies);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -9,12 +9,13 @@ export const CharacterForm = () => {
   const navigate = useNavigate();
   const { addNewCharacter } = useCharacters();
   const [character, setCharacter] = useState({
-    image: "",
+    image: "", // Store either URL or file
     name: "",
     strength: "",
     speed: "",
     skill: "",
   });
+  const [imageSource, setImageSource] = useState("url"); // State to track whether URL or file input is selected
 
   useEffect(() => {
     const timer = setTimeout(() => setLoader(false), 1000);
@@ -24,25 +25,39 @@ export const CharacterForm = () => {
   if (loader) return <Loader />;
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setCharacter((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, files } = e.target;
+
+    if (type === "file") {
+      // Handle file selection
+      setCharacter((prev) => ({
+        ...prev,
+        [name]: files[0], // Store the file object
+      }));
+    } else {
+      // Handle text-based inputs
+      setCharacter((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await addNewCharacter({
-        image: character.image,
-        name: character.name,
-        stats: {
-          strength: character.strength,
-          speed: character.speed,
-          skill: character.skill,
-        },
-      });
+      const formData = new FormData();
 
-      toast.success("Character added successful!");
+      if (imageSource === "file") {
+        formData.append("image", character.image); // Append the file
+      } else {
+        formData.append("image", character.image); // Append the URL (if URL is selected)
+      }
+
+      formData.append("name", character.name);
+      formData.append("strength", character.strength);
+      formData.append("speed", character.speed);
+      formData.append("skill", character.skill);
+
+      await addNewCharacter(formData);
+      toast.success("Character added successfully!");
 
       setCharacter({
         image: "",
@@ -60,9 +75,7 @@ export const CharacterForm = () => {
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
       <button
         className="btn btn-outline-primary position-absolute top-0 start-0 m-3"
-        style={{
-          zIndex: 2,
-        }}
+        style={{ zIndex: 2 }}
         onClick={() => navigate("/dashboard")}
       >
         <i className="bi bi-arrow-left"></i> Back
@@ -74,6 +87,7 @@ export const CharacterForm = () => {
         </h3>
 
         <form onSubmit={handleSubmit}>
+          {/* Name Input */}
           <div className="mb-3">
             <label className="form-label">Name</label>
             <div className="input-group">
@@ -91,28 +105,71 @@ export const CharacterForm = () => {
             </div>
           </div>
 
+          {/* Image Source Selection */}
           <div className="mb-3">
-            <label className="form-label">Image</label>
-            <div className="input-group">
-              <label
-                htmlFor="file-upload"
-                className="custom-file-upload form-control d-flex justify-content-between align-items-center"
-              >
-                <span className="text-truncate">
-                  {character.image ? character.image.name : "Choose a file"}
-                </span>
-                <i className="bi bi-file-earmark-arrow-up"></i>
-              </label>
-              <input
-                type="file"
-                id="file-upload"
-                name="image"
-                className="d-none"
-                onChange={handleChange}
-              />
+            <label className="form-label">Image Source</label>
+            <div className="d-flex justify-content-start mb-3">
+              <div className="form-check me-4">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="imageSource"
+                  value="url"
+                  checked={imageSource === "url"}
+                  onChange={() => setImageSource("url")}
+                />
+                <label className="form-check-label">URL</label>
+              </div>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="imageSource"
+                  value="file"
+                  checked={imageSource === "file"}
+                  onChange={() => setImageSource("file")}
+                />
+                <label className="form-check-label">File Upload</label>
+              </div>
             </div>
           </div>
 
+          {/* Conditionally render input based on imageSource */}
+          {imageSource === "url" ? (
+            <div className="mb-3">
+              <label className="form-label">Image URL</label>
+              <div className="input-group">
+                <span className="input-group-text">
+                  <i className="bi bi-image"></i>
+                </span>
+                <input
+                  type="url"
+                  name="image"
+                  className="form-control"
+                  placeholder="Enter image URL"
+                  value={character.image}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="mb-3">
+              <label className="form-label">Image File</label>
+              <div className="input-group">
+                <span className="input-group-text">
+                  <i className="bi bi-image"></i>
+                </span>
+                <input
+                  type="file"
+                  name="image"
+                  className="form-control"
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Strength Input */}
           <div className="mb-4">
             <label className="form-label">Strength</label>
             <div className="input-group">
@@ -130,6 +187,7 @@ export const CharacterForm = () => {
             </div>
           </div>
 
+          {/* Speed Input */}
           <div className="mb-4">
             <label className="form-label">Speed</label>
             <div className="input-group">
@@ -147,6 +205,7 @@ export const CharacterForm = () => {
             </div>
           </div>
 
+          {/* Skill Input */}
           <div className="mb-4">
             <label className="form-label">Skill</label>
             <div className="input-group">

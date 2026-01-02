@@ -15,7 +15,7 @@ export const UserCharacterList = () => {
     const fetchCharacters = async () => {
       if (!user) return;
       try {
-        await getUserCharacter(); // no user param
+        await getUserCharacter();
       } catch (error) {
         console.error("Failed to fetch user characters:", error);
       } finally {

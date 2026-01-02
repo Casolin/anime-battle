@@ -1,13 +1,16 @@
 import useAuth from "../../hooks/useAuth";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = ({ activePage, setActivePage }) => {
+  const navigate = useNavigate();
   const { logout } = useAuth();
 
   const handleLogout = async () => {
     try {
       await logout();
       toast.success("Logged out succesfully!");
+      navigate("/login");
     } catch (err) {
       toast.error(err.message);
     }

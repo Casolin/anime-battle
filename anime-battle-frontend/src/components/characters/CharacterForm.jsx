@@ -4,18 +4,33 @@ import useCharacters from "../../hooks/useCharacters";
 import { toast } from "react-toastify";
 import Loader from "../Loader";
 
+// This is a mock function. You need to replace this with your actual file upload logic.
+// This should upload the file and return the URL of the uploaded image.
+const uploadFileToServer = async (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  // Replace this URL with your actual file upload endpoint
+  const response = await fetch("https://your-server.com/upload", {
+    method: "POST",
+    body: formData,
+  });
+  const data = await response.json();
+  return data.imageUrl; // Return the URL after the file is uploaded
+};
+
 export const CharacterForm = () => {
   const [loader, setLoader] = useState(true);
   const navigate = useNavigate();
   const { addNewCharacter } = useCharacters();
   const [character, setCharacter] = useState({
-    image: "",
+    image: "", // This will store either the URL or base64 string for the image
     name: "",
     strength: "",
     speed: "",
     skill: "",
   });
-  const [imageSource, setImageSource] = useState("url");
+  const [imageSource, setImageSource] = useState("url"); // Tracks whether user wants to provide URL or File
 
   useEffect(() => {
     const timer = setTimeout(() => setLoader(false), 1000);
@@ -28,16 +43,19 @@ export const CharacterForm = () => {
     const { name, value, type, files } = e.target;
 
     if (type === "file") {
+      // Handle file input: Upload the file and get the URL
       const file = files[0];
       if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setCharacter((prev) => ({
-            ...prev,
-            [name]: reader.result,
-          }));
-        };
-        reader.readAsDataURL(file);
+        uploadFileToServer(file) // Upload the file to server/cloud and get the URL
+          .then((url) => {
+            setCharacter((prev) => ({
+              ...prev,
+              [name]: url, // Set the image as the URL returned from the upload
+            }));
+          })
+          .catch((err) => {
+            toast.error(err.message || "File upload failed");
+          });
       }
     } else {
       setCharacter((prev) => ({ ...prev, [name]: value }));
@@ -47,6 +65,7 @@ export const CharacterForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Ensure we have a valid image URL
     if (!character.image) {
       toast.error("Image is required");
       return;
@@ -54,7 +73,7 @@ export const CharacterForm = () => {
 
     try {
       await addNewCharacter({
-        image: character.image,
+        image: character.image, // This will be a URL (either from URL input or file upload)
         name: character.name,
         stats: {
           strength: character.strength,
@@ -93,6 +112,7 @@ export const CharacterForm = () => {
         </h3>
 
         <form onSubmit={handleSubmit}>
+          {/* Name Input */}
           <div className="mb-3">
             <label className="form-label">Name</label>
             <div className="input-group">
@@ -110,6 +130,7 @@ export const CharacterForm = () => {
             </div>
           </div>
 
+          {/* Image Source Selection */}
           <div className="mb-3">
             <label className="form-label">Image Source</label>
             <div className="d-flex justify-content-start mb-3">
@@ -138,6 +159,7 @@ export const CharacterForm = () => {
             </div>
           </div>
 
+          {/* Conditionally render input based on imageSource */}
           {imageSource === "url" ? (
             <div className="mb-3">
               <label className="form-label">Image URL</label>
@@ -172,6 +194,7 @@ export const CharacterForm = () => {
             </div>
           )}
 
+          {/* Strength Input */}
           <div className="mb-4">
             <label className="form-label">Strength</label>
             <div className="input-group">
@@ -189,6 +212,7 @@ export const CharacterForm = () => {
             </div>
           </div>
 
+          {/* Speed Input */}
           <div className="mb-4">
             <label className="form-label">Speed</label>
             <div className="input-group">
@@ -206,6 +230,7 @@ export const CharacterForm = () => {
             </div>
           </div>
 
+          {/* Skill Input */}
           <div className="mb-4">
             <label className="form-label">Skill</label>
             <div className="input-group">

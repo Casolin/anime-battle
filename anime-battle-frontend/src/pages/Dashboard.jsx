@@ -6,6 +6,7 @@ import { Characters } from "./Characters";
 export const Dashboard = () => {
   const [loader, setLoader] = useState(true);
   const [page, setPage] = useState("home");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoader(false), 1000);
@@ -29,12 +30,17 @@ export const Dashboard = () => {
   };
 
   return (
-    <div className="container-fluid vh-100">
-      <div className="row h-100">
-        <Sidebar activePage={page} setActivePage={setPage} />
+    <div className="dashboard-layout">
+      <Sidebar
+        activePage={page}
+        setActivePage={setPage}
+        isOpen={sidebarOpen}
+        setIsOpen={setSidebarOpen}
+      />
 
-        <main className="col-md-9 col-lg-10 p-4">{renderPage()}</main>
-      </div>
+      <main className="dashboard-content">
+        <div className="container-fluid">{renderPage()}</div>
+      </main>
     </div>
   );
 };

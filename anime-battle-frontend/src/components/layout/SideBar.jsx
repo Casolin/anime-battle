@@ -1,20 +1,7 @@
 import useAuth from "../../hooks/useAuth";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 const Sidebar = ({ activePage, setActivePage }) => {
-  const navigate = useNavigate();
   const { logout } = useAuth();
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-      toast.success("Logged out succesfully!");
-      navigate("/login");
-    } catch (err) {
-      toast.error(err.message);
-    }
-  };
 
   return (
     <nav className="col-md-3 col-lg-2 d-flex flex-column bg-dark text-white p-4">
@@ -79,7 +66,7 @@ const Sidebar = ({ activePage, setActivePage }) => {
       <div className="mt-auto">
         <button
           className="btn btn-outline-danger w-100 py-2"
-          onClick={handleLogout}
+          onClick={logout}
           style={{
             borderRadius: "30px",
             fontWeight: "bold",

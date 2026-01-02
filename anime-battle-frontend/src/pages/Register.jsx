@@ -72,7 +72,7 @@ export const Register = () => {
             <label className="form-label">Username</label>
             <div className="input-group">
               <span className="input-group-text">
-                <i className="bi bi-envelope"></i>
+                <i className="bi bi-person"></i>
               </span>
               <input
                 type="text"

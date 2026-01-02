@@ -78,7 +78,7 @@ export const CharacterForm = () => {
             <label className="form-label">Name</label>
             <div className="input-group">
               <span className="input-group-text">
-                <i className="bi bi-envelope"></i>
+                <i className="bi bi-person"></i>
               </span>
               <input
                 type="text"
@@ -95,7 +95,7 @@ export const CharacterForm = () => {
             <label className="form-label">Image</label>
             <div className="input-group">
               <span className="input-group-text">
-                <i className="bi bi-envelope"></i>
+                <i className="bi bi-image"></i>
               </span>
               <input
                 type="url"
@@ -112,7 +112,7 @@ export const CharacterForm = () => {
             <label className="form-label">Strength</label>
             <div className="input-group">
               <span className="input-group-text">
-                <i className="bi bi-lock"></i>
+                <i className="bi bi-shield"></i>
               </span>
               <input
                 type="number"
@@ -129,7 +129,7 @@ export const CharacterForm = () => {
             <label className="form-label">Speed</label>
             <div className="input-group">
               <span className="input-group-text">
-                <i className="bi bi-lock"></i>
+                <i className="bi bi-lightning"></i>
               </span>
               <input
                 type="number"
@@ -146,7 +146,7 @@ export const CharacterForm = () => {
             <label className="form-label">Skill</label>
             <div className="input-group">
               <span className="input-group-text">
-                <i className="bi bi-lock"></i>
+                <i className="bi bi-tools"></i>
               </span>
               <input
                 type="number"

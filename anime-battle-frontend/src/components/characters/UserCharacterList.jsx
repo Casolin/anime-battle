@@ -7,29 +7,26 @@ import Loader from "../Loader";
 
 export const UserCharacterList = () => {
   const [loader, setLoader] = useState(true);
-  const [hasFetched, setHasFetched] = useState(false); // Flag to prevent re-fetching
   const navigate = useNavigate();
   const { characterList, getUserCharacter } = useCharacters();
   const { user } = useAuth();
 
   useEffect(() => {
     const fetchCharacters = async () => {
-      if (!user || hasFetched) return; // Only fetch if user exists and data has not been fetched yet
-
+      if (!user) return;
       try {
-        await getUserCharacter(); // Fetch characters
-        setHasFetched(true); // Mark as fetched
+        await getUserCharacter(); // no user param
       } catch (error) {
         console.error("Failed to fetch user characters:", error);
       } finally {
-        setLoader(false); // Hide the loader once fetching is complete
+        setLoader(false);
       }
     };
 
     fetchCharacters();
-  }, [user, getUserCharacter, hasFetched]); // Dependency on `hasFetched` to prevent re-fetching
+  }, [user, getUserCharacter]);
 
-  if (loader) return <Loader />; // Show loader if fetching
+  if (loader) return <Loader />;
 
   return (
     <div className="container my-5">

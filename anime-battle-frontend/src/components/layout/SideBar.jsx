@@ -6,7 +6,7 @@ const Sidebar = ({ activePage, setActivePage }) => {
 
   const handleLogout = async () => {
     try {
-      await logout;
+      await logout();
       toast.success("Logged out succesfully!");
     } catch (err) {
       toast.error(err.message);

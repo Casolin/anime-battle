@@ -39,15 +39,17 @@ export const CharacterContextProvider = ({ children }) => {
     }
   };
 
-  const getUserCharacter = async (user) => {
-    try {
-      const userCharacters = await UserCharacters(user);
-      setCharacterList(userCharacters);
-    } catch (error) {
-      console.error("Error fetching user characters:", error.message);
-      setCharacterList([]);
-    }
-  };
+  const getUserCharacter =
+    (async (user) => {
+      try {
+        const userCharacters = await UserCharacters(user);
+        setCharacterList(userCharacters);
+      } catch (error) {
+        console.error("Error fetching user characters:", error.message);
+        setCharacterList([]);
+      }
+    },
+    []);
 
   const selectCharacter = (character) => {
     setSelectedCharacter(character);

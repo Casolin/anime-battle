@@ -94,15 +94,20 @@ export const CharacterForm = () => {
           <div className="mb-3">
             <label className="form-label">Image</label>
             <div className="input-group">
-              <span className="input-group-text">
-                <i className="bi bi-image"></i>
-              </span>
+              <label
+                htmlFor="file-upload"
+                className="custom-file-upload form-control d-flex justify-content-between align-items-center"
+              >
+                <span className="text-truncate">
+                  {character.image ? character.image.name : "Choose a file"}
+                </span>
+                <i className="bi bi-file-earmark-arrow-up"></i>
+              </label>
               <input
-                type="url"
+                type="file"
+                id="file-upload"
                 name="image"
-                className="form-control"
-                placeholder="Enter character image"
-                value={character.image}
+                className="d-none"
                 onChange={handleChange}
               />
             </div>

@@ -12,20 +12,22 @@ export const UserCharacterList = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (!user) return;
-
     const fetchCharacters = async () => {
+      if (!user) return; // Don't fetch if no user
       try {
-        await getUserCharacter();
+        await getUserCharacter(); // Fetch user characters
       } catch (error) {
         console.error("Failed to fetch user characters:", error);
       } finally {
-        setLoader(false);
+        setLoader(false); // Stop loading once done
       }
     };
 
-    fetchCharacters();
-  }, [user]);
+    // Only fetch when user is available
+    if (user) {
+      fetchCharacters();
+    }
+  }, [user]); // Only trigger when `user` changes
 
   if (loader) return <Loader />;
 

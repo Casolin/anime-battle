@@ -11,8 +11,9 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Characters } from "./pages/Characters";
 import { CharacterForm } from "./components/characters/CharacterForm";
 import { UserCharacterList } from "./components/characters/UserCharacterList";
-import { EnemyCharacterList } from "./components/characters/EnemyCharacterList";
+import { EnemyCharacterList } from "./components/battles/EnemyCharacterList";
 import { Battle } from "./pages/Battle";
+import { BattleResult } from "./components/battles/BattleResult";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/user-characters" element={<UserCharacterList />} />
           <Route path="/enemy-characters" element={<EnemyCharacterList />} />
           <Route path="/battle" element={<Battle />} />
+          <Route path="/battle-winner" element={<BattleResult />} />
         </Route>
       </Routes>
       <ToastContainer position="top-right" autoClose={3000} />

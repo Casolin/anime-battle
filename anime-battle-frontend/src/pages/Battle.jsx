@@ -1,9 +1,61 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useCharacters from "../hooks/useCharacters";
+import useBattles from "../hooks/useBattles";
 import { CharacterFightCard } from "../components/characters/CharacterFightCard";
 import "../styles/battle.css";
 
 export const Battle = () => {
   const { selectedCharacter, selectedEnemyCharacter } = useCharacters();
+  const { startBattle, battleInProgress } = useBattles();
+  const [battleStatus, setBattleStatus] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const initiateBattle = async () => {
+      if (selectedCharacter && selectedEnemyCharacter && !battleInProgress) {
+        setBattleStatus("Analyzing fight...");
+
+        setTimeout(() => {
+          setBattleStatus("Preparing for battle...");
+        }, 3000);
+
+        setTimeout(() => {
+          setBattleStatus("Calculating results...");
+        }, 6000);
+
+        setTimeout(async () => {
+          const battleInfo = {
+            user: selectedCharacter.owner,
+            character1Id: selectedCharacter._id,
+            character2Id: selectedEnemyCharacter._id,
+          };
+
+          try {
+            const battleResult = await startBattle(battleInfo);
+
+            if (battleResult) {
+              const { winner, score1, score2 } = battleResult.battle;
+              navigate("/battle-winner", { state: { winner, score1, score2 } });
+            } else {
+              setBattleStatus("No battle result returned.");
+            }
+          } catch (error) {
+            setBattleStatus("Something went wrong during battle.");
+            console.error("Error during battle:", error);
+          }
+        }, 10000);
+      }
+    };
+
+    initiateBattle();
+  }, [
+    selectedCharacter,
+    selectedEnemyCharacter,
+    navigate,
+    startBattle,
+    battleInProgress,
+  ]);
 
   return (
     <div className="battle-container">
@@ -23,6 +75,22 @@ export const Battle = () => {
             alt="VS"
             style={{ width: "150px", height: "150px" }}
           />
+          {battleStatus && (
+            <div
+              className="text-center mt-3 p-3"
+              style={{
+                backgroundColor: "#f8f9fa",
+                borderRadius: "10px",
+                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                color: "#6c757d",
+                fontSize: "18px",
+                fontWeight: "500",
+                textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)",
+              }}
+            >
+              <p>{battleStatus}</p>
+            </div>
+          )}
         </div>
 
         <div className="col-md-4 text-center">

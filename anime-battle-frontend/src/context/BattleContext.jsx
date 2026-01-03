@@ -6,20 +6,40 @@ const BattleContext = createContext(null);
 export const BattleContextProvider = ({ children }) => {
   const [battleInfo, setBattleInfo] = useState({
     user: "",
-    character1: "",
-    character2: "",
+    character1Id: "",
+    character2Id: "",
+    score1: 0,
+    score2: 0,
+    winner: "",
   });
 
+  const [battleInProgress, setBattleInProgress] = useState(false);
+
   const startBattle = async (data) => {
+    if (battleInProgress) {
+      console.log("Battle already in progress");
+      return;
+    }
+
+    setBattleInProgress(true);
+
     try {
-      const animebattle = await Battle(data);
-      setBattleInfo(animebattle);
+      const response = await Battle(data);
+      if (response && response.battle) {
+        setBattleInfo(response);
+        return response;
+      }
+
+      return null;
     } catch (error) {
-      console.error(error.message);
+      console.error("Error:", error.message);
+      return null;
+    } finally {
+      setBattleInProgress(false);
     }
   };
   return (
-    <BattleContext.Provider value={(battleInfo, setBattleInfo, startBattle)}>
+    <BattleContext.Provider value={{ battleInfo, setBattleInfo, startBattle }}>
       {children}
     </BattleContext.Provider>
   );

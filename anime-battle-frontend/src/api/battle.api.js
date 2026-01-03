@@ -2,7 +2,7 @@ import api from "./axios";
 
 export const Battle = async (battle) => {
   try {
-    const response = await api.post("/api/battle", battle);
+    const response = await api.post("/api/battles/fight", battle);
     return response.data;
   } catch (error) {
     console.error("Error battle", error);
